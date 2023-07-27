@@ -1,3 +1,5 @@
+from colorama import Fore, Style 
+
 def transforma_base(lista):
     questoes_por_nivel = {}
 
@@ -190,21 +192,21 @@ while continuar:
         break
 
     else:
-        print(f'Ok {nome}, você tem direito a pular 3 vezes e 2 ajudas!')
+        print(Fore.BLUE + f'Ok {nome}, você tem direito a pular 3 vezes e 2 ajudas!')
         print('                                                     ')
         print('As opções de resposta são "A", "B", "C", "D", "ajuda", "pula" e "parar"!')
         print('                                                     ')
         
-        print('Aperte ENTER para continuar...') 
+        print(Fore.RED +'Aperte ENTER para continuar...') 
 
         play = input()
 
         if play.strip() == "":
-            print('O jogo já vai começar! Lá vem a primeira questão! ')
+            print(Fore.GREEN +'O jogo já vai começar! Lá vem a primeira questão! ')
             print('                                                     ')
 
-            print('Vamos começar! ')
-            print('Aperte ENTER para continuar...  ')
+            print(Fore.YELLOW +'Vamos começar! ')
+            print(Fore.RED +'Aperte ENTER para continuar...  ')
 
             play = input()
 
@@ -292,7 +294,7 @@ while continuar:
                             print('Você já usou todas as suas ajudas disponíveis!')
 
                     elif resposta == 'PARAR':
-                        print(f'{nome}, sua pontuação final é: {premiacao}')
+                        print(Fore.YELLOW + f'{nome}, sua pontuação final é: {premiacao}')
                         break
 
                     elif resposta not in ['A', 'B', 'C', 'D']:
