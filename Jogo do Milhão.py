@@ -127,7 +127,7 @@ def gera_ajuda(dicio_quest):
         opcao_incorreta2 = dicio_quest['opcoes'][le_incorreta2]
         return f'DICA:\nOpções certamente erradas: {opcao_incorreta1} | {opcao_incorreta2} '
 
-lista_questoes = lista_questoes = [
+lista_questoes = [
     {
         'titulo': 'Qual o resultado da operação 57 + 32?',
         'nivel': 'facil',
