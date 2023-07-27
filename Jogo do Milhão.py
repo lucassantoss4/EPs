@@ -127,7 +127,7 @@ def gera_ajuda(dicio_quest):
         opcao_incorreta2 = dicio_quest['opcoes'][le_incorreta2]
         return f'DICA:\nOpções certamente erradas: {opcao_incorreta1} | {opcao_incorreta2} '
 
-lista_questoes = [
+lista_questoes = lista_questoes = [
     {
         'titulo': 'Qual o resultado da operação 57 + 32?',
         'nivel': 'facil',
@@ -137,7 +137,7 @@ lista_questoes = [
     {
         'titulo': 'Qual a capital do Brasil?',
         'nivel': 'facil',
-        'opcoes': {'A': 'Brasília', 'B': 'Rio de janeiro', 'C': 'São Paulo', 'D': 'Osasco'},
+        'opcoes': {'A': 'Brasília', 'B': 'Rio de Janeiro', 'C': 'São Paulo', 'D': 'Osasco'},
         'correta': 'A'
     },
     {
@@ -145,8 +145,39 @@ lista_questoes = [
         'nivel': 'medio',
         'opcoes': {'A': 'Marie Curie', 'B': 'Alan Turing', 'C': 'Ada Lovelace', 'D': 'Edsger Dijkstra'},
         'correta': 'C'
+    },
+    {
+        'titulo': 'Qual é o maior planeta do Sistema Solar?',
+        'nivel': 'medio',
+        'opcoes': {'A': 'Terra', 'B': 'Júpiter', 'C': 'Netuno', 'D': 'Marte'},
+        'correta': 'B'
+    },
+    {
+        'titulo': 'Qual é o principal gás presente na atmosfera da Terra?',
+        'nivel': 'medio',
+        'opcoes': {'A': 'Oxigênio', 'B': 'Nitrogênio', 'C': 'Dióxido de Carbono', 'D': 'Hidrogênio'},
+        'correta': 'B'
+    },
+    {
+        'titulo': 'Quem pintou a Mona Lisa?',
+        'nivel': 'dificil',
+        'opcoes': {'A': 'Pablo Picasso', 'B': 'Vincent van Gogh', 'C': 'Leonardo da Vinci', 'D': 'Michelangelo'},
+        'correta': 'C'
+    },
+    {
+        'titulo': 'Qual é o maior osso do corpo humano?',
+        'nivel': 'dificil',
+        'opcoes': {'A': 'Tíbia', 'B': 'Fêmur', 'C': 'Úmero', 'D': 'Costela'},
+        'correta': 'B'
+    },
+    {
+        'titulo': 'Em que país está localizada a Torre Eiffel?',
+        'nivel': 'dificil',
+        'opcoes': {'A': 'França', 'B': 'Itália', 'C': 'Espanha', 'D': 'Inglaterra'},
+        'correta': 'A'
     }
 ]
+
 
 continuar = True
 while continuar:
@@ -155,7 +186,7 @@ while continuar:
     print(aprensetacao)
 
     nome = input('Qual seu nome? ')
-    if nome == 'exit':
+    if nome == 'exit' or nome == 'sair' or nome == 'quit':
         break
 
     else:
@@ -172,27 +203,72 @@ while continuar:
             print('O jogo já vai começar! Lá vem a primeira questão! ')
             print('                                                     ')
 
-            print('Vamos começar com questões do nível FACIL!  ')
+            print('Vamos começar! ')
             print('Aperte ENTER para continuar...  ')
 
             play = input()
 
-
+            num_questao = premiacao = 0
             if play.strip() == "":
                 while True:
-                    premiacao = 0
+                    num_questao +=1
                     pulos_restantes = 3
                     ajudas_restantes = 2
                     lista_questoes_ja_sorteada = []
-                    questao = sorteia_questao_inedita(dicio_questoes_por_nivel, 'facil', lista_questoes_ja_sorteada)
-                    print(questao_para_texto(questao, 1))
-                    resposta = input('Sua resposta: ').strip().upper()
+                    nivel = ['facil', 'medio', 'dificil']
+                    escolhe_nivel = random.choice(nivel)
+                    questao = sorteia_questao_inedita(dicio_questoes_por_nivel, escolhe_nivel, lista_questoes_ja_sorteada)
+                    if num_questao == 1:
+                        print(questao_para_texto(questao, num_questao))
+                        resposta = input('Sua resposta:  ').strip().upper()
+
+
+                    else:
+                        print(questao_para_texto(questao, num_questao))
+                        resposta = input('Sua resposta:  ').strip().upper()
 
                     if resposta == 'PULA':
                         if pulos_restantes > 0:
                             pulos_restantes -= 1
                             print(f'Você pulou a questão! Restam {pulos_restantes} pulos.')
-                            break
+                            questao = sorteia_questao_inedita(dicio_questoes_por_nivel, escolhe_nivel, lista_questoes_ja_sorteada)
+                            print(questao_para_texto(questao, num_questao+1))
+                            resposta = input('Sua resposta: ').strip().upper()
+
+                            if resposta == questao['correta']:
+                                print('Resposta correta!')
+                                premiacao += 1000
+                                print(f'Você acertou! Seu prêmio atual é de R$ {premiacao}\n')
+                                
+                            elif resposta == 'PULA':
+                                pulos_restantes -= 1
+                                print(f'Você pulou a questão! Restam {pulos_restantes} pulos.')
+                                questao = sorteia_questao_inedita(dicio_questoes_por_nivel, escolhe_nivel, lista_questoes_ja_sorteada)
+                                print(questao_para_texto(questao, num_questao+1))
+                                resposta = input('Sua resposta: ').strip().upper()
+
+                            elif resposta == 'AJUDA':
+                                if ajudas_restantes > 0:
+                                    ajudas_restantes -= 1
+                                    dica = gera_ajuda(questao)
+                                    print(dica)
+                                    resposta = input('Sua resposta: ').strip().upper()
+
+                                    if resposta == questao['correta']:
+                                        print('Resposta correta!')
+                                        premiacao += 1000
+                                        print(f'Você acertou! Seu prêmio atual é de R$ {premiacao}\n')
+
+                                    else:
+                                        print('Que pena! Você errou e vai sair sem nada :( ')
+                                        premiacao = 0
+                                        break
+                            else:
+                                print('Que pena! Você errou e vai sair sem nada :( ')
+                                premiacao = 0
+                                break
+
+
                         else:
                             print('Você já usou todos os seus pulos disponíveis!')
 
@@ -201,6 +277,17 @@ while continuar:
                             ajudas_restantes -= 1
                             dica = gera_ajuda(questao)
                             print(dica)
+                            resposta = input('Sua resposta: ').strip().upper()
+
+                            if resposta == questao['correta']:
+                                print('Resposta correta!')
+                                premiacao += 1000
+                                print(f'Você acertou! Seu prêmio atual é de R$ {premiacao}\n')
+
+                            else:
+                                print('Que pena! Você errou e vai sair sem nada :( ')
+                                premiacao = 0
+                                break
                         else:
                             print('Você já usou todas as suas ajudas disponíveis!')
 
